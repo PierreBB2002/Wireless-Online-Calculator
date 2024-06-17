@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSMA Throughput Calculator</title>
+
+    <link rel="stylesheet" href="style4.css">
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="logo">
+      <img src="logo.jpg" alt="Logo">
+      <div class="title">
+        <h1>Wireless and Mobile Networks Calculator</h1>
+        <p>Comprehensive tools for Network analysis and design</p>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Calculators</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="main">
+
+<h1>CSMA Throughput Calculator</h1>
+<div class="containerInputs">
+
+<form id="csmaForm">
+  <label for="type">Select CSMA Type:</label>
+  <select id="type" required>
+    <option value="unslotted-nonpersistent">Unslotted Nonpersistent CSMA</option>
+    <option value="slotted-nonpersistent">Slotted Nonpersistent CSMA</option>
+    <option value="unslotted-1persistent">Unslotted 1-persistent CSMA</option>
+    <option value="slotted-1persistent">Slotted 1-persistent CSMA</option>
+  </select>
+
+  <label for="dataRate">Data Rate (Mbps):</label>
+  <input type="number" id="dataRate" step="0.01" required>
+
+  <label for="frameSize">Frame Size (Kbits):</label>
+  <input type="number" id="frameSize" step="0.01" required>
+
+  <label for="frameRate">Frame Rate (Kfps):</label>
+  <input type="number" id="frameRate" step="0.01" required>
+
+  <label for="propagationTime">Propagation Time (µs):</label>
+  <input type="number" id="propagationTime" step="0.01" required>
+
+  <button type="button" onclick="calculateThroughput()">Calculate Throughput</button>
+</form>
+</div>
+
+<h2>Result:</h2>
+<p id="result"></p>
+<p id="details"></p>
+</div>
+<script>
+  function calculateThroughput() {
+    const type = document.getElementById('type').value;
+    const dataRate = parseFloat(document.getElementById('dataRate').value) * 1e6;
+    const frameSize = parseFloat(document.getElementById('frameSize').value) * 1e3;
+    const frameRate = parseFloat(document.getElementById('frameRate').value) * 1e3;
+    const propagationTime = parseFloat(document.getElementById('propagationTime').value) * 1e-6;
+
+    const frameTime = frameSize / dataRate;
+    const G = frameRate * frameTime;
+    const alpha = propagationTime / frameTime;
+
+    let S_th;
+    if (type === 'unslotted-nonpersistent') {
+      S_th = (G * Math.exp(-2 * alpha * frameTime)) / (G * (1 + 2 * alpha) + Math.exp(-alpha * G));
+    } else if (type === 'slotted-nonpersistent') {
+      S_th = (alpha * G * Math.exp(-2 * alpha * frameTime)) / (1 - Math.exp(-alpha * G) + alpha);
+    } else if (type === 'unslotted-1persistent') {
+      S_th = (G * (1 + G + alpha * G * (1 + G + alpha * G / 2)) * Math.exp(-G * (1 + 2 * alpha))) /
+              (G * (1 + 2 * alpha) - (1 - Math.exp(-alpha * G)) + (1 + alpha * G) * Math.exp(-G * (1 + 2 * alpha)));
+    } else if (type === 'slotted-1persistent') {
+      S_th = (G * (1 + alpha - Math.exp(-alpha * G)) * Math.exp(-G * (1 + alpha))) /
+              ((1 + alpha) * (1 - Math.exp(-alpha * G)) + alpha * Math.exp(-G * (1 + alpha)));
+    }
+
+    const throughputPercentage = (S_th * 100).toFixed(2);
+
+    document.getElementById('result').textContent = `Throughput: ${throughputPercentage}%`;
+    document.getElementById('details').textContent = `Frame Time: ${(frameTime * 1e3).toFixed(2)} ms, G: ${G.toFixed(2)}, Alpha: ${alpha.toFixed(2)}`;
+  }
+</script>
+
+</body>
+</html>

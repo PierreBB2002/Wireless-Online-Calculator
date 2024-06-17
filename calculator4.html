@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmitted Power Calculator</title>
+    <link rel="stylesheet" href="style3.css">
+
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="logo.jpg" alt="Logo">
+            <div class="title">
+                <h1>Wireless and Mobile Networks Calculator</h1>
+                <p>Comprehensive tools for Network analysis and design</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Calculators</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div class="main">
+
+
+<h1>Transmitted Power Calculator</h1>
+
+<div class="containerInputs">
+
+<div class="input-group">
+    <label for="modulationType">Modulation Type:</label>
+    <select id="modulationType">
+        <option value="BPSK">BPSK/QPSK</option>
+        <option value="8PSK">8-PSK</option>
+        <option value="16PSK">16-PSK</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <label for="ber">Bit Error Rate (BER):</label>
+    <select id="ber">
+        <option value="0.1">10^-1</option>
+        <option value="0.01">10^-2</option>
+        <option value="0.001">10^-3</option>
+        <option value="0.0001">10^-4</option>
+        <option value="0.00001">10^-5</option>
+        <option value="0.000001">10^-6</option>
+        <option value="0.0000001">10^-7</option>
+        <option value="0.00000001">10^-8</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <label for="M">Margin Link:</label>
+    <div class="input-row">
+        <input type="number" id="M">
+        <select id="MUnit">
+            <option value="noUnit">No Unit</option>
+            <option value="dB">dB</option>
+        </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="k">Boltzmann Constant (k):</label>
+    <div class="input-row">
+    <input type="number" id="k" value="1.38e-23" readonly>
+    <select id="kUnit">
+        <option value="noUnit">No Unit</option>
+        <option value="dB">dB</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="T">System Temperature (T):</label>
+    <div class="input-row">
+
+    <input type="number" id="T">
+    <select id="TUnit">
+        <option value="K">K</option>
+        <option value="dB">dB</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Nf">Total Noise Figure (N<sub>f,total</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Nf">
+    <select id="NfUnit">
+        <option value="noUnit">No Unit</option>
+        <option value="dB">dB</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="R">Data Rate (R):</label>
+    <div class="input-row">
+    <input type="number" id="R">
+    <select id="RUnit">
+        <option value="Kbps">Kbps</option>
+        <option value="dB">dB</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="EbNo">Required (E<sub>b</sub>/N<sub>0</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="EbNo"  readonly placeholder="the required result will be visible here">
+    <select id="EbNoUnit">
+        <option value="dB">dB</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Pr">Received Power (P<sub>r</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Pr"   placeholder="if it is empty it will be calculated manually ">
+    <select id="PrUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Gt">Gain of Transmitting Antenna (G<sub>t</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Gt">
+    <select id="GtUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Gr">Gain of Receiving Antenna (G<sub>r</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Gr">
+    <select id="GrUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="At">Amplifier at Transmitter (A<sub>t</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="At">
+    <select id="AtUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Ar">Amplifier at Receiver (A<sub>r</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Ar">
+    <select id="ArUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Lp">Path Loss (L<sub>p</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Lp">
+    <select id="LpUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Lf">Feeders Loss (L<sub>f</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Lf">
+    <select id="LfUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Lo">Other Losses (L<sub>o</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Lo">
+    <select id="LoUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+<div class="input-group">
+    <label for="Fmargin">Fading Margin (F<sub>margin</sub>):</label>
+    <div class="input-row">
+    <input type="number" id="Fmargin">
+    <select id="FmarginUnit">
+        <option value="dB">dB</option>
+        <option value="noUnit">No Unit</option>
+    </select>
+    </div>
+</div>
+
+
+<button onclick="calculateTransmittedPower()">Calculate Transmitted Power</button>
+
+<h2>Received Power (P<sub>r</sub>):</h2>
+<p>In dB: <span id="result-Pr-dB">-</span></p>
+<p>In No Unit: <span id="result-Pr-noUnit">-</span></p>
+
+<h2>Transmitted Power (P<sub>t</sub>):</h2>
+<p>In dB: <span id="result-dB">-</span></p>
+<p>In No Unit: <span id="result-noUnit">-</span></p>
+</div>
+</div>
+
+<script>
+    function dBToLinear(dB) {
+        return Math.pow(10, dB / 10);
+    }
+
+    function linearToDB(linear) {
+        return 10 * Math.log10(linear);
+    }
+
+    function getValueInDB(value, unit) {
+        if (unit === 'noUnit' || unit === 'Kbps' || unit === 'K') {
+            return linearToDB(value);
+        }
+        return value;
+    }
+
+    function getValueFromDB(dB, unit) {
+        if (unit === 'noUnit' || unit === 'Kbps' || unit === 'K') {
+            return dBToLinear(dB);
+        }
+        return dB;
+    }
+
+    function calculatePr(M, k, T, Nf, R, EbNo) {
+        const M_dB = getValueInDB(M, document.getElementById('MUnit').value);
+        const k_dB = getValueInDB(k, document.getElementById('kUnit').value);
+        const T_dB = getValueInDB(T, document.getElementById('TUnit').value);
+        const Nf_dB = getValueInDB(Nf, document.getElementById('NfUnit').value);
+        const R_dB = getValueInDB(R, document.getElementById('RUnit').value);
+        const EbNo_dB = getValueInDB(EbNo, document.getElementById('EbNoUnit').value);
+
+        const Pr_dB = M_dB + k_dB + T_dB + Nf_dB + R_dB + EbNo_dB;
+        return Pr_dB;
+    }
+
+    function calculateEbNo(modulationType, ber) {
+        const ebNoValues = {
+            'BPSK': {
+                '0.1': 0, '0.01': 4, '0.001': 6, '0.0001': 8, '0.00001': 10, '0.000001': 10 ,'0.0000001':12 ,'0.00000001':12
+            },
+            '8PSK': {
+                '0.1': 2, '0.01': 8, '0.001': 10, '0.0001': 12, '0.00001': 12, '0.000001': 14 ,'0.0000001':14 ,'0.00000001':16
+            },
+            '16PSK': {
+                '0.1': 4, '0.01': 12, '0.001': 14, '0.0001': 16, '0.00001': 16, '0.000001': 18 ,'0.0000001':20 ,'0.00000001':22
+            }
+        };
+
+        return ebNoValues[modulationType][ber];
+    }
+
+    function calculateTransmittedPower() {
+        let modulationType = document.getElementById('modulationType').value;
+        let ber = document.getElementById('ber').value;
+
+        let EbNo = calculateEbNo(modulationType, ber);
+        document.getElementById('EbNo').value = EbNo;
+
+        let M = parseFloat(document.getElementById('M').value);
+        let k = parseFloat(document.getElementById('k').value);
+        let T = parseFloat(document.getElementById('T').value);
+        let Nf = parseFloat(document.getElementById('Nf').value);
+        let R = parseFloat(document.getElementById('R').value);
+      R=1000*R
+        let Pr_dB;
+        if (document.getElementById('Pr').value.trim() !== '') {
+            Pr_dB = parseFloat(document.getElementById('Pr').value);
+        } else {
+            Pr_dB = calculatePr(M, k, T, Nf, R, EbNo);
+            let Pr_noUnit = dBToLinear(Pr_dB);
+            document.getElementById('result-Pr-dB').innerText = Pr_dB.toFixed(2);
+            document.getElementById('result-Pr-noUnit').innerText = Pr_noUnit.toFixed(2);
+        }
+
+        let Gt = parseFloat(document.getElementById('Gt').value);
+        let GtUnit = document.getElementById('GtUnit').value;
+        Gt = getValueInDB(Gt, GtUnit);
+
+        let Gr = parseFloat(document.getElementById('Gr').value);
+        let GrUnit = document.getElementById('GrUnit').value;
+        Gr = getValueInDB(Gr, GrUnit);
+
+        let At = parseFloat(document.getElementById('At').value);
+        let AtUnit = document.getElementById('AtUnit').value;
+        At = getValueInDB(At, AtUnit);
+
+        let Ar = parseFloat(document.getElementById('Ar').value);
+        let ArUnit = document.getElementById('ArUnit').value;
+        Ar = getValueInDB(Ar, ArUnit);
+
+        let Lp = parseFloat(document.getElementById('Lp').value);
+        let LpUnit = document.getElementById('LpUnit').value;
+        Lp = getValueInDB(Lp, LpUnit);
+
+        let Lf = parseFloat(document.getElementById('Lf').value);
+        let LfUnit = document.getElementById('LfUnit').value;
+        Lf = getValueInDB(Lf, LfUnit);
+
+        let Lo = parseFloat(document.getElementById('Lo').value);
+        let LoUnit = document.getElementById('LoUnit').value;
+        Lo = getValueInDB(Lo, LoUnit);
+
+        let Fmargin = parseFloat(document.getElementById('Fmargin').value);
+        let FmarginUnit = document.getElementById('FmarginUnit').value;
+        Fmargin = getValueInDB(Fmargin, FmarginUnit);
+
+        let Pt_dB = Pr_dB + Lp + Lf + Lo + Fmargin - Gt - Gr - At - Ar;
+        let Pt_noUnit = dBToLinear(Pt_dB);
+
+        document.getElementById('result-dB').innerText = Pt_dB.toFixed(2);
+        document.getElementById('result-noUnit').innerText = Pt_noUnit.toFixed(2);
+    }
+
+</script>
+</body>
+</html>
