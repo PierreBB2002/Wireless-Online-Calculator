@@ -105,3 +105,8 @@ h2 {
 h1 {
     color: #e8ebee;
 }
+
+nav ul li a:hover {
+    text-decoration: underline;
+    color: #2a4977;
+}

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireless and Mobile Networks Calculator</title>
     <link rel="stylesheet" href="css/calculatorStyle1.css">
-    <script defer src="js/script.js"></script>
+    <script defer src="js/script2.js"></script>
 </head>
 <body>
     <header>
@@ -30,18 +30,20 @@
     <main>
         <div class="container">
             <section class="calculator">
-                <h2>1. Signal Processing Calculator</h2>
+                <h2>2. Resource Elements and OFDM Calculator</h2>
                 <form id="calculatorForm">
                     <label for="bwidth">Bandwidth:</label>
                     <input type="text" id="bwidth" name="bwidth">
-                    <label for="Qbits">Quantizer Bits:</label>
-                    <input type="text" id="Qbits" name="Qbits">
-                    <label for="compression">Compression Rate:</label>
-                    <input type="text" id="compression" name="compression">
-                    <label for="chEncoder">Rate of Channel Encoder:</label>
-                    <input type="text" id="chEncoder" name="chEncoder">
-                    <label for="interleaverBits">Interleaver Bits:</label>
-                    <input type="text" id="interleaverBits" name="interleaverBits">
+                    <label for="SubcarrierSpacing">Subcarrier Spacing:</label>
+                    <input type="text" id="SubSpacing" name="SubSpacing">
+                    <label for="OFDM">Number of OFDM:</label>
+                    <input type="text" id="OFDMNo" name="OFDMNo">
+                    <label for="Duration">Resource Block Duration in ms:</label>
+                    <input type="text" id="RBD" name="RBD">
+                    <label for="QAM">Modulating Technique bits of QAM:</label>
+                    <input type="text" id="QAMBits" name="QAMBits">
+                    <label for="parallel">Number of Parallel resource block:</label>
+                    <input type="text" id="ParallelNum" name="ParallelNum">
                     <input type="button" value="Calculate" onclick="performCalculation()">
                 </form>
                 <div id="results"></div>

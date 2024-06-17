@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 50%;
     margin: 0 auto;
     max-width: 1200px;
 }
@@ -22,6 +22,11 @@ header {
     background: linear-gradient(135deg, #1f2a48, #1a2d55);
     padding: 20px 0;
     text-align: center;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+    color: #2a4977;
 }
 
 .logo img {
