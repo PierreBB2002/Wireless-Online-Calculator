@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireless and Mobile Networks Calculator</title>
+    <link rel="stylesheet" href="css/calculatorStyle1.css">
+    <script defer src="js/script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.jpg" alt="Logo">
+                <div class="title">
+                    <h1>Wireless and Mobile Networks Calculator</h1>
+                    <p>Comprehensive tools for Network analysis and design</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Calculators</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="calculator">
+                <h2>1. Signal Processing Calculator</h2>
+                <form id="calculatorForm">
+                    <label for="bwidth">Bandwidth:</label>
+                    <input type="text" id="bwidth" name="bwidth">
+                    <label for="Qbits">Quantizer Bits:</label>
+                    <input type="text" id="Qbits" name="Qbits">
+                    <label for="compression">Compression Rate:</label>
+                    <input type="text" id="compression" name="compression">
+                    <label for="chEncoder">Rate of Channel Encoder:</label>
+                    <input type="text" id="chEncoder" name="chEncoder">
+                    <label for="interleaverBits">Interleaver Bits:</label>
+                    <input type="text" id="interleaverBits" name="interleaverBits">
+                    <input type="button" value="Calculate" onclick="performCalculation()">
+                </form>
+                <div id="results"></div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Wireless and Mobile Networks Calculator. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
