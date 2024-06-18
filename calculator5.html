@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmitted Power Calculator</title>
+    <link rel="stylesheet" href="css/style3.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="logo.jpg" alt="Logo">
+            <div class="title">
+                <h1>Wireless and Mobile Networks Calculator</h1>
+                <p>Comprehensive tools for Network analysis and design</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Calculators</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div class="main">
+    <h1>Cellular System Design Calculator</h1>
+    <div class="containerInputs">
+        <div class="input-group">
+            <label for="M">Area of the City in km²:</label>
+            <input type="number" id="M">
+        </div>
+        <div class="input-group">
+            <label for="SC">Number of Subcarriers:</label>
+            <input type="number" id="SC">
+        </div>
+        <div class="input-group">
+            <label for="calls">Average Calls per Day:</label>
+            <input type="number" id="calls">
+        </div>
+        <div class="input-group">
+            <label for="callsDuration">Average Call Duration in Minutes:</label>
+            <input type="number" id="callsDuration">
+        </div>
+        <div class="input-group">
+            <label for="Prob">Drop Probability:</label>
+            <input type="number" id="Prob">
+        </div>
+        <div class="input-group">
+            <label for="SIR">Minimum SIR (Signal Interference Ratio):</label>
+            <div class="input-row">
+                <input type="number" id="SIR">
+                <select id="SIRUnit">
+                    <option value="no unit">no unit</option>
+                    <option value="dB">dB</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="PRD">Power at Reference Distance:</label>
+            <div class="input-row">
+                <input type="number" id="PRD">
+                <select id="PRDUnit">
+                    <option value="no unit">no unit</option>
+                    <option value="dB">dB</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="PRS">Power at Receiver Sensitivity:</label>
+            <div class="input-row">
+                <input type="number" id="PRS">
+                <select id="PRSUnit">
+                    <option value="no unit">no unit</option>
+                    <option value="dB">dB</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="DistRef">Distance Reference (meters):</label>
+            <div class="input-row">
+                <input type="number" id="DistRef">
+                <select id="DRUnit">
+                    <option value="no unit">no unit</option>
+                    <option value="dB">dB</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="PathLoss">Path Loss Exponent:</label>
+            <div class="input-row">
+                <input type="number" id="PathLoss">
+                <select id="PLUnit">
+                    <option value="no unit">no unit</option>
+                    <option value="dB">dB</option>
+                </select>
+            </div>
+        </div>
+
+        <button onclick="calculateTransmittedPower()">Calculate Transmitted Power</button>
+        <div id="results">
+            <h2>Calculation Results:</h2>
+            <p>Maximum Distance: <span id="result-distance">-</span> meters</p>
+            <p>Received Power (P<sub>r</sub>): <span id="result-Pr-dB">-</span> dB</p>
+            <p>Transmitted Power (P<sub>t</sub>): <span id="result-Pt-dB">-</span> dB</p>
+            <p>Transmitted Power (P<sub>t</sub>): <span id="result-Pt-noUnit">-</span> no unit</p>
+        </div>
+    </div>
+</div>
+<script>
+    function getValueInDB(value, unit) {
+        if (unit === 'dB') {
+            return value;
+        } else {
+            return 10 * Math.log10(value);
+        }
+    }
+
+    function dBToLinear(dB) {
+        return Math.pow(10, dB / 10);
+    }
+
+    function calculateTransmittedPower() {
+        // Retrieve input values
+        let P0 = parseFloat(document.getElementById('PRD').value) * 1e-3;
+        let P0Unit = document.getElementById('PRDUnit').value;
+
+        let PowerReceiver = parseFloat(document.getElementById('PRS').value) * 1e-6;
+        let PowerReceiverUnit = document.getElementById('PRSUnit').value;
+
+        let distRef = parseFloat(document.getElementById('DistRef').value);
+        let pathL = parseFloat(document.getElementById('PathLoss').value);
+
+        // Perform calculations
+        const dist = distRef / Math.pow(PowerReceiver / P0, 1 / pathL);
+
+        // Display results
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <h3>Calculation Results:</h3>
+            <p>Maximum Distance:  <span class="results-value">${dist.toFixed(2)} </p>
+            
+        `;
+    }
+</script>
+</body>
+</html>
