@@ -83,20 +83,12 @@
             <label for="DistRef">Distance Reference (meters):</label>
             <div class="input-row">
                 <input type="number" id="DistRef">
-                <select id="DRUnit">
-                    <option value="no unit">no unit</option>
-                    <option value="dB">dB</option>
-                </select>
             </div>
         </div>
         <div class="input-group">
             <label for="PathLoss">Path Loss Exponent:</label>
             <div class="input-row">
                 <input type="number" id="PathLoss">
-                <select id="PLUnit">
-                    <option value="no unit">no unit</option>
-                    <option value="dB">dB</option>
-                </select>
             </div>
         </div>
 
@@ -104,45 +96,99 @@
         <div id="results">
             <h2>Calculation Results:</h2>
             <p>Maximum Distance: <span id="result-distance">-</span> meters</p>
-            <p>Received Power (P<sub>r</sub>): <span id="result-Pr-dB">-</span> dB</p>
-            <p>Transmitted Power (P<sub>t</sub>): <span id="result-Pt-dB">-</span> dB</p>
-            <p>Transmitted Power (P<sub>t</sub>): <span id="result-Pt-noUnit">-</span> no unit</p>
+            <p>Cell Size: <span id="result-cell-size">-</span> square meters</p>
+            <p>Number of Cells: <span id="result-cells">-</span></p>
+            <p>Traffic Load: <span id="result-traffic-load">-</span> Erlang</p>
+            <p>Cell Load: <span id="result-cell-load">-</span> Erlang per square meter</p>
+            <p>Number of Channels if the number of co-channel interfering is 6: <span id="result-channels">-</span></p>
         </div>
     </div>
 </div>
 <script>
-    function getValueInDB(value, unit) {
+    function convertToLinear(value, unit) {
         if (unit === 'dB') {
-            return value;
+            return Math.pow(10, value / 10);
         } else {
-            return 10 * Math.log10(value);
+            return value;
         }
     }
 
-    function dBToLinear(dB) {
-        return Math.pow(10, dB / 10);
+    function erlangB(traffic, channels) {
+        let invB = 1.0;
+        for (let i = 1; i <= channels; i++) {
+            invB = 1 + invB * i / traffic;
+        }
+        return 1 / invB;
+    }
+
+    function findChannels(traffic, blockingProbability) {
+        let channels = 1;
+        while (erlangB(traffic, channels) > blockingProbability) {
+            channels++;
+        }
+        return channels;
     }
 
     function calculateTransmittedPower() {
-        // Retrieve input values
-        let P0 = parseFloat(document.getElementById('PRD').value) * 1e-3;
+        let P0 = parseFloat(document.getElementById('PRD').value);
         let P0Unit = document.getElementById('PRDUnit').value;
 
-        let PowerReceiver = parseFloat(document.getElementById('PRS').value) * 1e-6;
+        if (P0Unit === 'dB') {
+            P0 = convertToLinear(P0, P0Unit);
+        } else {
+            P0 = P0 * 1e-3;
+        }
+
+        let PowerReceiver = parseFloat(document.getElementById('PRS').value);
         let PowerReceiverUnit = document.getElementById('PRSUnit').value;
+
+        if (PowerReceiverUnit === 'dB') {
+            PowerReceiver = convertToLinear(PowerReceiver, PowerReceiverUnit);
+        } else {
+            PowerReceiver = PowerReceiver * 1e-6;
+        }
 
         let distRef = parseFloat(document.getElementById('DistRef').value);
         let pathL = parseFloat(document.getElementById('PathLoss').value);
 
+        let area = parseFloat(document.getElementById('M').value) * 1e6;
+
+        let subscribers = parseFloat(document.getElementById('SC').value);
+        let avgCallsPerDay = parseFloat(document.getElementById('calls').value);
+        let avgCallDuration = parseFloat(document.getElementById('callsDuration').value);
+
+        let dropProbability = parseFloat(document.getElementById('Prob').value);
+
+        let SIR_input = parseFloat(document.getElementById('SIR').value);
+        let SIR_inputUnit = document.getElementById('SIRUnit').value;
+        if (SIR_inputUnit === 'dB') {
+            SIR_input = convertToLinear(SIR_input, SIR_inputUnit);
+        }
+
         // Perform calculations
         const dist = distRef / Math.pow(PowerReceiver / P0, 1 / pathL);
+
+        const cellSize = (3 * Math.sqrt(3) / 2) * Math.pow(dist, 2);
+
+        const numberOfCells = area / cellSize;
+
+        const trafficLoad = (subscribers * avgCallsPerDay / 24) * (avgCallDuration / 60);
+
+        const cellLoad = trafficLoad / numberOfCells;
+
+        const a = Math.pow(6 * SIR_input, 1 / pathL);
+        const numberOfChannels = parseFloat(Math.pow(a, 2) / 3);
 
         // Display results
         const resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = `
             <h3>Calculation Results:</h3>
-            <p>Maximum Distance:  <span class="results-value">${dist.toFixed(2)} </p>
-            
+            <p>Maximum Distance: <span class="results-value" id="result-distance">${dist.toFixed(2)}</span> meters</p>
+            <p>Cell Size: <span class="results-value" id="result-cell-size">${cellSize.toFixed(2)}</span> square meters</p>
+            <p>Number of Cells: <span class="results-value" id="result-cells">${Math.ceil(numberOfCells)}</span></p>
+            <p>Traffic Load: <span class="results-value" id="result-traffic-load">${trafficLoad.toFixed(2)}</span> Erlang</p>
+            <p>Cell Load: <span class="results-value" id="result-cell-load">${cellLoad.toFixed(2)}</span> Erlang per square meter</p>
+            <p>Number of Channels if the number of co-channel interfering is 6: <span class="results-value" id="result-channels">${Math.ceil(numberOfChannels)}</span></p>
         `;
     }
 </script>

@@ -14,6 +14,10 @@ function performCalculation() {
     const numOfParallel = parseInt(document.getElementById('ParallelNum').value);
 
     // Validate inputs
+    if(Number.isNaN(bandwidth)){
+        alert('Enter the missing inputs');
+        return;
+    }
     if (!Number.isInteger(bandwidth / subcarrierSpacing)) {
         alert('Bandwidth / Subcarrier Spacing should be an integer.');
         return;
@@ -21,6 +25,10 @@ function performCalculation() {
 
     if (!isPowerOfTwo(qamBits)) {
         alert('QAM bits should be a power of 2.');
+        return;
+    }
+    if(numOfParallel < 0){
+        alert('Number of parallel resources block should be a positive integer.');
         return;
     }
 

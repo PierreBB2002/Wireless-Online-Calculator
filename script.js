@@ -15,6 +15,26 @@ function performCalculation() {
     const sourceBits = samplingFreq * compressionRate * quantizerBits;
     const channelBits = sourceBits * (channelEncoderRate**-1);
     const interleavedBits = channelBits;
+    // Validate inputs
+    if(Number.isNaN(bandwidth)){
+        alert('Enter the missing inputs');
+        return;
+    }
+
+    if (!Number.isInteger(quantizerBits)) {
+        alert('quantizer bits should be an integer.');
+        return;
+    }
+
+    if(compressionRate > 1){
+        alert('compression rate should be less than 1.');
+        return;
+    }
+
+    if(channelEncoderRate > 1){
+        alert('channel encoder rate should be less than 1.');
+        return;
+    }
 
     // Display results
     const resultsDiv = document.getElementById('results');
