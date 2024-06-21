@@ -79,14 +79,12 @@
     const frameRate = parseFloat(document.getElementById('frameRate').value) * 1e3;
     const propagationTime = parseFloat(document.getElementById('propagationTime').value) * 1e-6;
 
-    // Reset previous error messages
     document.getElementById('typeError').textContent = '';
     document.getElementById('dataRateError').textContent = '';
     document.getElementById('frameSizeError').textContent = '';
     document.getElementById('frameRateError').textContent = '';
     document.getElementById('propagationTimeError').textContent = '';
 
-    // Check if any required field is empty
     const form = document.getElementById('csmaForm');
     if (!form.checkValidity()) {
       if (type === '') {
