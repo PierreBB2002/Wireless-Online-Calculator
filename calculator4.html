@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSMA Throughput Calculator</title>
-    <link rel="stylesheet" href="css/style4.css">
+  <link rel="stylesheet" href="css/style4.css">
+  <style>
+    .error-message {
+      color: red;
+      font-size: 0.8em;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -27,39 +33,44 @@
   </div>
 </header>
 <div class="main">
+  <h1>CSMA Throughput Calculator</h1>
+  <div class="containerInputs">
+    <form id="csmaForm">
+      <label for="type">Select CSMA Type:</label>
+      <select id="type" required>
+        <option value="">Select CSMA Type</option>
+        <option value="unslotted-nonpersistent">Unslotted Nonpersistent CSMA</option>
+        <option value="slotted-nonpersistent">Slotted Nonpersistent CSMA</option>
+        <option value="unslotted-1persistent">Unslotted 1-persistent CSMA</option>
+        <option value="slotted-1persistent">Slotted 1-persistent CSMA</option>
+      </select>
+      <div id="typeError" class="error-message"></div>
 
-<h1>CSMA Throughput Calculator</h1>
-<div class="containerInputs">
+      <label for="dataRate">Data Rate (Mbps):</label>
+      <input type="number" id="dataRate" step="0.01" required>
+      <div id="dataRateError" class="error-message"></div>
 
-<form id="csmaForm">
-  <label for="type">Select CSMA Type:</label>
-  <select id="type" required>
-    <option value="unslotted-nonpersistent">Unslotted Nonpersistent CSMA</option>
-    <option value="slotted-nonpersistent">Slotted Nonpersistent CSMA</option>
-    <option value="unslotted-1persistent">Unslotted 1-persistent CSMA</option>
-    <option value="slotted-1persistent">Slotted 1-persistent CSMA</option>
-  </select>
+      <label for="frameSize">Frame Size (Kbits):</label>
+      <input type="number" id="frameSize" step="0.01" required>
+      <div id="frameSizeError" class="error-message"></div>
 
-  <label for="dataRate">Data Rate (Mbps):</label>
-  <input type="number" id="dataRate" step="0.01" required>
+      <label for="frameRate">Frame Rate (Kfps):</label>
+      <input type="number" id="frameRate" step="0.01" required>
+      <div id="frameRateError" class="error-message"></div>
 
-  <label for="frameSize">Frame Size (Kbits):</label>
-  <input type="number" id="frameSize" step="0.01" required>
+      <label for="propagationTime">Propagation Time (µs):</label>
+      <input type="number" id="propagationTime" step="0.01" required>
+      <div id="propagationTimeError" class="error-message"></div>
 
-  <label for="frameRate">Frame Rate (Kfps):</label>
-  <input type="number" id="frameRate" step="0.01" required>
+      <button type="button" onclick="calculateThroughput()">Calculate Throughput</button>
+    </form>
+  </div>
 
-  <label for="propagationTime">Propagation Time (µs):</label>
-  <input type="number" id="propagationTime" step="0.01" required>
-
-  <button type="button" onclick="calculateThroughput()">Calculate Throughput</button>
-</form>
+  <h2>Result:</h2>
+  <p id="result"></p>
+  <p id="details"></p>
 </div>
 
-<h2>Result:</h2>
-<p id="result"></p>
-<p id="details"></p>
-</div>
 <script>
   function calculateThroughput() {
     const type = document.getElementById('type').value;
@@ -67,6 +78,34 @@
     const frameSize = parseFloat(document.getElementById('frameSize').value) * 1e3;
     const frameRate = parseFloat(document.getElementById('frameRate').value) * 1e3;
     const propagationTime = parseFloat(document.getElementById('propagationTime').value) * 1e-6;
+
+    // Reset previous error messages
+    document.getElementById('typeError').textContent = '';
+    document.getElementById('dataRateError').textContent = '';
+    document.getElementById('frameSizeError').textContent = '';
+    document.getElementById('frameRateError').textContent = '';
+    document.getElementById('propagationTimeError').textContent = '';
+
+    // Check if any required field is empty
+    const form = document.getElementById('csmaForm');
+    if (!form.checkValidity()) {
+      if (type === '') {
+        document.getElementById('typeError').textContent = 'Please select a CSMA Type.';
+      }
+      if (isNaN(dataRate)) {
+        document.getElementById('dataRateError').textContent = 'Please enter a valid Data Rate.';
+      }
+      if (isNaN(frameSize)) {
+        document.getElementById('frameSizeError').textContent = 'Please enter a valid Frame Size.';
+      }
+      if (isNaN(frameRate)) {
+        document.getElementById('frameRateError').textContent = 'Please enter a valid Frame Rate.';
+      }
+      if (isNaN(propagationTime)) {
+        document.getElementById('propagationTimeError').textContent = 'Please enter a valid Propagation Time.';
+      }
+      return;
+    }
 
     const frameTime = frameSize / dataRate;
     const G = frameRate * frameTime;

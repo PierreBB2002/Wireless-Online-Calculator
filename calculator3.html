@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transmitted Power Calculator</title>
     <link rel="stylesheet" href="css/style3.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -36,6 +43,7 @@
                 <option value="8PSK">8-PSK</option>
                 <option value="16PSK">16-PSK</option>
             </select>
+            <span id="error-modulationType" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="ber">Bit Error Rate (BER):</label>
@@ -49,6 +57,7 @@
                 <option value="0.0000001">10^-7</option>
                 <option value="0.00000001">10^-8</option>
             </select>
+            <span id="error-ber" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="M">Margin Link:</label>
@@ -59,6 +68,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-M" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="k">Boltzmann Constant (k):</label>
@@ -69,6 +79,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-k" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="T">System Temperature (T):</label>
@@ -79,6 +90,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-T" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Nf">Total Noise Figure (N<sub>f,total</sub>):</label>
@@ -89,6 +101,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-Nf" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="R">Data Rate (R):</label>
@@ -99,6 +112,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-R" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="EbNo">Required (E<sub>b</sub>/N<sub>0</sub>):</label>
@@ -108,6 +122,7 @@
                     <option value="dB">dB</option>
                 </select>
             </div>
+            <span id="error-EbNo" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Pr">Received Power (P<sub>r</sub>):</label>
@@ -118,6 +133,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Pr" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Gt">Gain of Transmitting Antenna (G<sub>t</sub>):</label>
@@ -128,6 +144,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Gt" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Gr">Gain of Receiving Antenna (G<sub>r</sub>):</label>
@@ -138,6 +155,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Gr" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="At">Amplifier at Transmitter (A<sub>t</sub>):</label>
@@ -148,6 +166,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-At" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Ar">Amplifier at Receiver (A<sub>r</sub>):</label>
@@ -158,6 +177,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Ar" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Lp">Path Loss (L<sub>p</sub>):</label>
@@ -168,6 +188,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Lp" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Lf">Feeders Loss (L<sub>f</sub>):</label>
@@ -178,6 +199,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Lf" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Lo">Other Losses (L<sub>o</sub>):</label>
@@ -188,6 +210,7 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Lo" class="error">This field is required</span>
         </div>
         <div class="input-group">
             <label for="Fmargin">Fading Margin (F<sub>margin</sub>):</label>
@@ -198,11 +221,11 @@
                     <option value="noUnit">No Unit</option>
                 </select>
             </div>
+            <span id="error-Fmargin" class="error">This field is required</span>
         </div>
         <button onclick="calculateTransmittedPower()">Calculate Transmitted Power</button>
         <h2>Received Power (P<sub>r</sub>):</h2>
         <p>In dB: <span id="result-Pr-dB">-</span></p>
-        <p>In No Unit: <span id="result-Pr-noUnit">-</span></p>
         <h2>Transmitted Power (P<sub>t</sub>):</h2>
         <p>In dB: <span id="result-dB">-</span></p>
         <p>In No Unit: <span id="result-noUnit">-</span></p>
@@ -224,12 +247,6 @@
         return value;
     }
 
-    function getValueFromDB(dB, unit) {
-        if (unit === 'noUnit' || unit === 'Kbps' || unit === 'K') {
-            return dBToLinear(dB);
-        }
-        return dB;
-    }
 
     function calculatePr(M, k, T, Nf, R, EbNo) {
         const M_dB = getValueInDB(M, document.getElementById('MUnit').value);
@@ -259,11 +276,38 @@
         return ebNoValues[modulationType][ber];
     }
 
+    function showError(inputId, message) {
+        document.getElementById(`error-${inputId}`).innerText = message;
+        document.getElementById(`error-${inputId}`).style.display = 'inline';
+    }
+
+    function hideError(inputId) {
+        document.getElementById(`error-${inputId}`).style.display = 'none';
+    }
+
     function calculateTransmittedPower() {
         document.getElementById('result-Pr-dB').innerText = '-';
-        document.getElementById('result-Pr-noUnit').innerText = '-';
         document.getElementById('result-dB').innerText = '-';
         document.getElementById('result-noUnit').innerText = '-';
+
+        let isValid = true;
+        const requiredFields = [
+             'ber', 'M', 'k', 'T', 'Nf', 'R', 'Gt', 'Gr', 'At', 'Ar', 'Lp', 'Lf', 'Lo', 'Fmargin'
+        ];
+
+        requiredFields.forEach(field => {
+            let fieldElement = document.getElementById(field);
+            if (fieldElement.value.trim() === '' || isNaN(parseFloat(fieldElement.value))) {
+                showError(field, 'This field is required');
+                isValid = false;
+            } else {
+                hideError(field);
+            }
+        });
+
+        if (!isValid) {
+            return;
+        }
 
         let modulationType = document.getElementById('modulationType').value;
         let ber = document.getElementById('ber').value;
@@ -285,7 +329,6 @@
             Pr_dB = calculatePr(M, k, T, Nf, R, EbNo);
             let Pr_noUnit = dBToLinear(Pr_dB);
             document.getElementById('result-Pr-dB').innerText = Pr_dB.toFixed(2);
-            document.getElementById('result-Pr-noUnit').innerText = Pr_noUnit.toFixed(2);
         }
 
         let Gt = parseFloat(document.getElementById('Gt').value);
